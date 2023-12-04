@@ -4,15 +4,38 @@ import { UpdateProfessorDto } from './dto/update-professor.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Professor } from './entities/professor.entity';
+import { ProfessorMateria } from './entities/professor-materia.entity';
+import { Materia } from '../materia/entities/materia.entity';
 
 @Injectable()
 export class ProfessorService {
   constructor(
     @InjectRepository(Professor)
-    private repo: Repository<Professor>
+    private repo: Repository<Professor>,
+    @InjectRepository(Materia)
+    private repoMateria: Repository<Materia>,
+    @InjectRepository(ProfessorMateria)
+    private repoMateriaProfessor: Repository<ProfessorMateria>
   ){}
   async create(createAvaliacaoMateriaDto: CreateProfessorDto) {
-    return await this.repo.save(new Professor(createAvaliacaoMateriaDto));
+    let professor = null;
+    try {
+      professor = await this.repo.save(new Professor(createAvaliacaoMateriaDto));
+      await Promise.all(createAvaliacaoMateriaDto.materia.map(async (materia) => {
+          const dbMateria = await this.repoMateria.findOneOrFail({ id: materia });
+          const relation = new ProfessorMateria();
+          relation.materia = dbMateria;
+          relation.professor = professor;
+          await this.repoMateriaProfessor.save(relation);
+        }
+        ));
+      return await this.repo.findOneOrFail(professor.id);
+    } catch (error) {
+      // if (professor) {
+      //   await this.repo.delete(professor);
+      // }
+      throw error;
+    }
   }
 
   async findAll() {

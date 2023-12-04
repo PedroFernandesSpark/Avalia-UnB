@@ -30,8 +30,4 @@ export class ProfessorMateria {
 
   // @OneToOne(() => Schedule, (schedule) => schedule.apointment)
   // schedule: Schedule;
-
-  constructor(dto:any){
-    Object.assign(this,dto);
-  }
 }

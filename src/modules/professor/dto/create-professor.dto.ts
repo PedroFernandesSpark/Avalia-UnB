@@ -45,6 +45,13 @@ export class CreateProfessorDto {
     professor: string;
 
     @ApiProperty({
+      example: 'professor@unb.br',
+      description: 'email',
+      required: true,
+    })
+    email: string;
+
+    @ApiProperty({
       description: 'materia',
       required: false,
     })

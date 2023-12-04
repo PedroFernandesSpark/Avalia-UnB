@@ -16,7 +16,7 @@ export class Materia {
   @OneToOne(() => AvaliacaoMateria, (avaliacao) => avaliacao.id)
   avaliacaoMateria: AvaliacaoMateria;
 
-  @OneToMany(() => ProfessorMateria, (professor) => professor.id, {eager: true, cascade: true})
+  @OneToMany(() => ProfessorMateria, (professor) => professor.id)
   public professor?: ProfessorMateria[];
 
   constructor(dto:any){

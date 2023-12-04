@@ -31,8 +31,8 @@ export class Professor {
   @OneToOne(() => AvaliacaoProfessor, (avaliacao) => avaliacao.id)
   avaliacaoProfessor: AvaliacaoProfessor;
 
-  @OneToMany(() => ProfessorMateria, (materia) => materia.id, {eager: true, cascade: true})
-  public materia?: ProfessorMateria[];
+  @OneToMany(() => ProfessorMateria, (materia) => materia.professor)
+  public materia?: ProfessorMateria[] | number[];
 
   // @ManyToOne(() => Patient, (patient) => patient.id)
   // @JoinColumn({ name: 'patient' })
