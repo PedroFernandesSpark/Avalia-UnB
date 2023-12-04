@@ -1,5 +1,6 @@
 import { AvaliacaoProfessor } from "src/modules/avaliacao-professor/entities/avaliacao-professor.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { ProfessorMateria } from "./professor-materia.entity";
 
 @Entity({name: 'professor'})
 export class Professor {
@@ -15,11 +16,23 @@ export class Professor {
   @Column({ name: 'email', type: 'varchar', nullable: false})
   public email: string;
 
+  @Column({ name: 'universidade', type: 'varchar', nullable: false})
+  public universidade: string;
+
+  @Column({ name: 'area-pesquisa', type: 'varchar', nullable: false})
+  public areaPesquisa: string;
+
+  @Column({ name: 'idade', type: 'varchar', nullable: false})
+  public idade: number;
+
   @Column({ name: 'professor', type: 'varchar', nullable: true})
   public professor?: string;
 
   @OneToOne(() => AvaliacaoProfessor, (avaliacao) => avaliacao.id)
   avaliacaoProfessor: AvaliacaoProfessor;
+
+  @OneToMany(() => ProfessorMateria, (materia) => materia.id, {eager: true, cascade: true})
+  public materia?: ProfessorMateria[];
 
   // @ManyToOne(() => Patient, (patient) => patient.id)
   // @JoinColumn({ name: 'patient' })

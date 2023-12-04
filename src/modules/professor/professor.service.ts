@@ -21,7 +21,11 @@ export class ProfessorService {
 
   async findOne(id: number) {
     try {
-      return this.repo.findOneOrFail(id);
+      return this.repo.createQueryBuilder('professor')
+      .leftJoinAndSelect('professor.materia', 'materiaProf')
+      .leftJoinAndSelect('materiaProf.materia', 'materia')
+      .where('professor.id = :id',{id:id})
+      .getOneOrFail();
     } catch(error){
       throw new NotFoundException(error.message);
     }
